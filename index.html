@@ -517,10 +517,11 @@
 
 
     <div class="templates">
-        <button class="templates-item" id="OTMENA200" onclick="ot200()">ОТМЕНА 200К</button>
+        <button class="templates-item" id="OTMENA3" onclick="ot1()">ОТМЕНА 1К</button>
         <button class="templates-item" id="OTMENA3" onclick="ot3()">ОТМЕНА 3К</button>
         <button class="templates-item" id="OTMENA8" onclick="ot8()">ОТМЕНА 8К</button>
         <button class="templates-item" id="OTMENA23" onclick="ot23()">ОТМЕНА 23К</button>
+        <button class="templates-item" id="OTMENA200" onclick="ot200()">ОТМЕНА 200К</button>
 
         <input class="change-data-time" type="text">
     </div>
@@ -534,22 +535,34 @@
             document.querySelector('.info-alert-text').textContent = 'Ошибка «Блокировка Антифрод»'
         }
 
+        function ot1() {
+            document.querySelector('.main-sum').textContent = '1 001 ₽'
+
+            document.querySelector('.info-alert-text').textContent = 'Ошибка «Блокировка Антифрод»'
+            document.querySelector('.info-alert-text').style.fontSize = '22px';
+        }
+
         function ot3() {
             document.querySelector('.main-sum').textContent = '3 006 ₽'
 
             document.querySelector('.info-alert-text').textContent = 'Ошибка «Блокировка Антифрод»'
+            document.querySelector('.info-alert-text').style.fontSize = '22px';
         }
 
         function ot8() {
             document.querySelector('.main-sum').textContent = '8 056 ₽'
 
             document.querySelector('.info-alert-text').textContent = 'Ошибка «Налог не уплачен»'
+
+            document.querySelector('.info-alert-text').style.fontSize = '22px';
         }
 
         function ot23() {
             document.querySelector('.main-sum').textContent = '23 056 ₽'
 
-            document.querySelector('.info-alert-text').textContent = 'Ошибка «Лицензионный сбор не олачен»'
+            document.querySelector('.info-alert-text').textContent = 'Ошибка «Лицензионный сбор не оплачен»'
+
+            document.querySelector('.info-alert-text').style.fontSize = '21px';
         }
 
 
