@@ -485,7 +485,8 @@
         }
 
         .change-numberOfCart,
-        .change-numberOfPhone {
+        .change-numberOfPhone,
+        .change-numberOfCard {
             background: #f3f3f3;
             color: #222;
 
@@ -505,19 +506,23 @@
                 background 0.2s ease;
         }
 
-        /* hover — очень аккуратно */
         .change-numberOfCart:hover,
-        .change-numberOfPhone:hover {
+        .change-numberOfPhone:hover,
+        .change-numberOfCard:hover {
             background: #f0f0f0;
             border-color: #bcbcbc;
         }
 
-        /* focus — ЧЁТКО, но не кричаще */
         .change-numberOfCart:focus,
-        .change-numberOfPhone:focus {
+        .change-numberOfPhone:focus,
+        .change-numberOfCard:focus {
             background: #ffffff;
             border-color: #7a7a7a;
             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .change-numberOfCard {
+            display: none;
         }
     </style>
 </head>
@@ -600,18 +605,38 @@
         <input class="change-data-time" type="text">
 
         <div class="change-CON">
-            <button  class="change-CON-item" onclick="changeOnCart()">Карта</button>
+            <button class="change-CON-item active" onclick="changeOnCart()">Платежный счет</button>
+            <button class="change-CON-item" onclick="changeOnCard()">Номер карты</button>
             <button class="change-CON-item" onclick="changeOnPhone()">Номер Телефона</button>
         </div>
 
 
-        <input type="text" maxlength="4" inputmode="numeric" class="change-numberOfCart" placeholder="Последние 4 цифры карты" type="text">
+        <input type="text" maxlength="4" inputmode="numeric" class="change-numberOfCart"
+            placeholder="Последние 4 цифры карты" type="text">
         <input class="change-numberOfPhone" placeholder="Введите номер телефона" type="text">
-
+        <input class="change-numberOfCard" placeholder="Введите номер карты" type="text">
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
+
+        const cardFullInput = document.querySelector('.change-numberOfCard');
+
+        cardFullInput.addEventListener('input', () => {
+            // Берём только цифры
+            let digits = cardFullInput.value.replace(/\D/g, '');
+
+            // Ограничиваем до 16 цифр
+            if (digits.length > 16) digits = digits.slice(0, 16);
+
+            // Форматируем: добавляем пробелы каждые 4 цифры
+            let formatted = digits.replace(/(.{4})/g, '$1 ').trim();
+
+            // Вставляем обратно в input
+            cardFullInput.value = formatted;
+
+            document.querySelector('.number-of-card').textContent = formatted;
+        });
 
         const cardInput = document.querySelector('.change-numberOfCart');
 
@@ -660,19 +685,39 @@
             const number = document.querySelector('.number-of-card')
             const btnToInputPhone = document.querySelector('.change-numberOfPhone')
             const btnToInputCart = document.querySelector('.change-numberOfCart')
+            const btnToInputCard = document.querySelector('.change-numberOfCard')
 
-            title.textContent = 'Платёжный счет'
+            title.textContent = 'Платежный счёт'
             number.textContent = '••6591'
             btnToInputPhone.style.display = 'none'
             btnToInputCart.style.display = 'block'
+            btnToInputCard.style.display = 'none'
+            document.querySelector('.details-title').textContent = 'Платежный счёт';
 
         };
+
+        function changeOnCard() {
+            const title = document.querySelector('.payment-account')
+            const number = document.querySelector('.number-of-card')
+            const btnToInputPhone = document.querySelector('.change-numberOfPhone')
+            const btnToInputCart = document.querySelector('.change-numberOfCart')
+            const btnToInputCard = document.querySelector('.change-numberOfCard')
+
+            title.textContent = 'Номер карты получателя'
+            number.textContent = '2200 2200 2200 2345'
+            number.style.fontSize = '21px'
+            btnToInputPhone.style.display = 'none'
+            btnToInputCart.style.display = 'none'
+            btnToInputCard.style.display = 'block'
+            document.querySelector('.details-title').textContent = 'Счёт получателя';
+        }
 
         function changeOnPhone() {
             const title = document.querySelector('.payment-account')
             const number = document.querySelector('.number-of-card')
             const btnToInputPhone = document.querySelector('.change-numberOfPhone')
             const btnToInputCart = document.querySelector('.change-numberOfCart')
+            const btnToInputCard = document.querySelector('.change-numberOfCard')
 
 
             title.textContent = 'Номер телефона'
@@ -680,6 +725,8 @@
             number.style.fontSize = '21px'
             btnToInputPhone.style.display = 'block'
             btnToInputCart.style.display = 'none'
+            btnToInputCard.style.display = 'none'
+            document.querySelector('.details-title').textContent = 'Счёт получателя';
         };
 
         const buttons = document.querySelectorAll('.change-CON-item');
