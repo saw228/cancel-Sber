@@ -448,6 +448,77 @@
         .change-data-time::placeholder {
             color: #8a8a8a;
         }
+
+        .change-CON {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .change-CON-item {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-family: "Segoe UI", sans-serif;
+            cursor: pointer;
+            min-width: 140px;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .change-CON-item:hover {
+            background-color: #d6d6d6;
+            transform: translateY(-2px);
+        }
+
+        .change-CON-item.active {
+            background-color: white;
+            color: black;
+            font-weight: bold;
+        }
+
+        .change-numberOfPhone {
+            display: none;
+        }
+
+        .change-numberOfCart,
+        .change-numberOfPhone {
+            background: #f3f3f3;
+            color: #222;
+
+            border: 1px solid #c8c8c8;
+            border-radius: 6px;
+
+            padding: 7px 12px;
+            font-size: 13px;
+            font-family: "Segoe UI", system-ui, sans-serif;
+
+            min-width: 185px;
+            height: 32px;
+
+            outline: none;
+            transition: border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        /* hover — очень аккуратно */
+        .change-numberOfCart:hover,
+        .change-numberOfPhone:hover {
+            background: #f0f0f0;
+            border-color: #bcbcbc;
+        }
+
+        /* focus — ЧЁТКО, но не кричаще */
+        .change-numberOfCart:focus,
+        .change-numberOfPhone:focus {
+            background: #ffffff;
+            border-color: #7a7a7a;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+        }
     </style>
 </head>
 
@@ -527,10 +598,101 @@
         <button class="templates-item" id="OTMENA200" onclick="ot200()">ОТМЕНА 200К</button>
 
         <input class="change-data-time" type="text">
+
+        <div class="change-CON">
+            <button  class="change-CON-item" onclick="changeOnCart()">Карта</button>
+            <button class="change-CON-item" onclick="changeOnPhone()">Номер Телефона</button>
+        </div>
+
+
+        <input type="text" maxlength="4" inputmode="numeric" class="change-numberOfCart" placeholder="Последние 4 цифры карты" type="text">
+        <input class="change-numberOfPhone" placeholder="Введите номер телефона" type="text">
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
+
+        const cardInput = document.querySelector('.change-numberOfCart');
+
+        cardInput.addEventListener('input', () => {
+            // Берём только цифры из того, что ввёл пользователь
+            let digits = cardInput.value.replace(/\D/g, '');
+
+            // Ограничиваем до 4 цифр (после двух точек)
+            if (digits.length > 4) digits = digits.slice(0, 4);
+
+            // Формируем отображение: сначала две точки, потом цифры
+            document.querySelector('.number-of-card').textContent = '••' + digits;
+        });
+
+        const phoneInput = document.querySelector('.change-numberOfPhone');
+
+        phoneInput.addEventListener('input', () => {
+            // Берем только цифры
+            let digits = phoneInput.value.replace(/\D/g, '');
+
+            // Ограничиваем длину до 11 цифр (для России)
+            if (digits.length > 11) digits = digits.slice(0, 11);
+
+            // Форматируем
+            let formatted = '+7 ';
+
+            if (digits.length > 1) {
+                formatted += '(' + digits.slice(1, 4);
+            }
+            if (digits.length >= 4) {
+                formatted += ') ' + digits.slice(4, 7);
+            }
+            if (digits.length >= 7) {
+                formatted += '-' + digits.slice(7, 9);
+            }
+            if (digits.length >= 9) {
+                formatted += '-' + digits.slice(9, 11);
+            }
+
+            phoneInput.value = formatted;
+            document.querySelector('.number-of-card').textContent = formatted;
+        });
+
+        function changeOnCart() {
+            const title = document.querySelector('.payment-account')
+            const number = document.querySelector('.number-of-card')
+            const btnToInputPhone = document.querySelector('.change-numberOfPhone')
+            const btnToInputCart = document.querySelector('.change-numberOfCart')
+
+            title.textContent = 'Платёжный счет'
+            number.textContent = '••6591'
+            btnToInputPhone.style.display = 'none'
+            btnToInputCart.style.display = 'block'
+
+        };
+
+        function changeOnPhone() {
+            const title = document.querySelector('.payment-account')
+            const number = document.querySelector('.number-of-card')
+            const btnToInputPhone = document.querySelector('.change-numberOfPhone')
+            const btnToInputCart = document.querySelector('.change-numberOfCart')
+
+
+            title.textContent = 'Номер телефона'
+            number.textContent = '+7 (ХХХ) ХХХ-ХХ-ХХ'
+            number.style.fontSize = '21px'
+            btnToInputPhone.style.display = 'block'
+            btnToInputCart.style.display = 'none'
+        };
+
+        const buttons = document.querySelectorAll('.change-CON-item');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Убираем active у всех кнопок
+                buttons.forEach(btn => btn.classList.remove('active'));
+
+                // Добавляем active на нажатую кнопку
+                button.classList.add('active');
+            });
+        });
 
         function ot200() {
             document.querySelector('.main-sum').textContent = '200 000 ₽'
