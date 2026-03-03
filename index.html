@@ -305,7 +305,8 @@
         }
 
         .payment-account {
-            color: var(--text-color);
+            /* color: var(--text-color); */
+            color: #989898;
             font-size: 22px;
             position: absolute;
             bottom: 225px;
@@ -313,7 +314,7 @@
         }
 
         .number-of-card {
-            color: #989898;
+            color: var(--text-color);;
             font-size: 22px;
             position: absolute;
             bottom: 190px;
@@ -562,8 +563,6 @@
 
             <span class="details">Подробности</span>
 
-            <span class="details-title write-off-account">Счет списания</span>
-
             <span class="payment-account">Платежный счёт</span>
             <span class="number-of-card">••6591</span>
 
@@ -692,7 +691,7 @@
             btnToInputPhone.style.display = 'none'
             btnToInputCart.style.display = 'block'
             btnToInputCard.style.display = 'none'
-            document.querySelector('.details-title').textContent = 'Платежный счёт';
+            document.querySelector('.details-title').textContent = 'Счёт списания';
 
         };
 
@@ -703,7 +702,7 @@
             const btnToInputCart = document.querySelector('.change-numberOfCart')
             const btnToInputCard = document.querySelector('.change-numberOfCard')
 
-            title.textContent = 'Номер карты получателя'
+            title.textContent = 'Номер карты'
             number.textContent = '2200 2200 2200 2345'
             number.style.fontSize = '21px'
             btnToInputPhone.style.display = 'none'
